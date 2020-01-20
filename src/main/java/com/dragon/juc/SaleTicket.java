@@ -38,7 +38,7 @@ public class SaleTicket {
         //实例化一个资源对象
         Ticket ticket = new Ticket();
 
-        //传统方式创建线程对象
+        //匿名内部类方式创建线程对象
         new Thread(new Runnable() {
             @Override
             public void run() {
