@@ -21,7 +21,7 @@ class ShareDataOne {
     public  void incr() throws InterruptedException {
         lock.lock();
         try {
-            //判断
+            //判断（防止虚假唤醒用while）
             while  (number != 0) {
                 cd.await();
             }
