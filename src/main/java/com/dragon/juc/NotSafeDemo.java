@@ -1,9 +1,6 @@
 package com.dragon.juc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author：Dragon Wen
@@ -16,7 +13,9 @@ import java.util.UUID;
 public class NotSafeDemo {
 
     public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
+        //ArrayList在迭代的时候如果同时对其进行修改就会抛出java.util.ConcurrentModificationException异常
+//        List<String> list = new ArrayList<>();
+        List<String> list = new Vector<>();
 
         for (int i = 1; i <=50 ; i++) {
             new Thread(()->{
