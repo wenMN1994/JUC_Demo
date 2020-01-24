@@ -1,7 +1,9 @@
 package com.dragon.juc;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @author：Dragon Wen
@@ -15,7 +17,25 @@ public class NotSafeDemo {
 
     public static void main(String[] args) {
 
+//        Map<String, String> map = new HashMap<>(); //线程不安全
+        Map<String, String> map = new ConcurrentHashMap<>(); //线程安全
+        for (int i = 1; i < 50; i++) {
+            new Thread(()->{
+                map.put(UUID.randomUUID().toString().substring(0,8),Thread.currentThread().getName());
+                System.out.println(map);
+            },String.valueOf(i)).start();
+        }
+    }
 
+    private static void noSafeSet() {
+//        Set<String> set = new HashSet<>();//线程不安全
+        Set<String> set = new CopyOnWriteArraySet<>();//线程安全
+        for (int i = 1; i < 100; i++) {
+            new Thread(()->{
+                set.add(UUID.randomUUID().toString().substring(0,8));
+                System.out.println(set);
+            },String.valueOf(i)).start();
+        }
     }
 
     private static void noSafeList() {
