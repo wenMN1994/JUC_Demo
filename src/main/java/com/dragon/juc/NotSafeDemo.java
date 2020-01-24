@@ -20,9 +20,9 @@ public class NotSafeDemo {
 
     private static void noSafeList() {
 //        List<String> list = new ArrayList<>(); //ArrayList在迭代的时候如果同时对其进行修改就会抛出java.util.ConcurrentModificationException异常
-//        List<String> list = new Vector<>();
-//        List<String> list = Collections.synchronizedList(new ArrayList<>());
-        List<String> list = new CopyOnWriteArrayList();
+//        List<String> list = new Vector<>(); //使用Vector可以解决线程不安全问题，但是实际工作中不使用此方法
+//        List<String> list = Collections.synchronizedList(new ArrayList<>()); // 使用Collections可以解决线程不安全问题，但是实际工作中不使用此方法
+        List<String> list = new CopyOnWriteArrayList(); //实际工作中推荐使用CopyOnWriteArrayList（写时复制）
 
         for (int i = 1; i <=50 ; i++) {
             new Thread(()->{
