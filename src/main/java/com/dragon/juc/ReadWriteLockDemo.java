@@ -24,6 +24,7 @@ class MyCache {
         try {
             System.out.println(Thread.currentThread().getName()+"\t 准备写入数据"+key);
             TimeUnit.MILLISECONDS.sleep(200);
+            map.put(key, value);
             System.out.println(Thread.currentThread().getName()+"\t 写入数据完成"+key);
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,7 +38,8 @@ class MyCache {
         try {
             System.out.println(Thread.currentThread().getName()+"\t 准备读取数据"+key);
             TimeUnit.MILLISECONDS.sleep(200);
-            System.out.println(Thread.currentThread().getName()+"\t 读取数据完毕"+key);
+            String value = map.get(key);
+            System.out.println(Thread.currentThread().getName()+"\t 读取数据完毕"+value);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
