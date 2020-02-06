@@ -1,5 +1,7 @@
 package com.dragon.juc;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -67,7 +69,29 @@ public class StreamDemo {
         User u3 = new User(13, "c", 22);
         User u4 = new User(14, "d", 28);
         User u5 = new User(16, "e", 26);
+//        tset();
+        /**
+         * 请按照给出数据，找出
+         * 偶数ID
+         * 年龄大于24
+         * 用户名转为大写
+         * 用户名字母倒排序
+         * 只输出一个
+         * 用户名字
+         */
+        List<User> list = Arrays.asList(u1,u2,u3,u4,u5);
+        list.stream().filter(p->{
+            return p.getId() % 2 ==0;
+        }).filter(p->{
+            return p.getAge() > 24;
+        }).map(f->{
+            return f.getUserName().toUpperCase();
+        }).sorted((o1, o2)->{
+            return o2.compareTo(o1);
+        }).limit(1).forEach(System.out::println);
+    }
 
+    private static void tset() {
         //void accept(T t); 消费型 有参数 无返回值
         Consumer<String> consumer = t -> {
             System.out.println(t);
