@@ -60,6 +60,57 @@ class ShareDataOne {
     }
 }
 
+class Demo{
+    private int num = 0; //初始值为的一个变量
+    private int flag = 0;
+    private Lock lock = new ReentrantLock();
+    private Condition cdInt = lock.newCondition();
+    private Condition cdAZ = lock.newCondition();
+
+    public  void printInt(int i) throws InterruptedException {
+        lock.lock();
+        try {
+            //判断
+            while (flag != 0){
+                cdInt.await();
+            }
+            //干活
+            flag++;
+
+            if(i<=26){
+                System.out.print(++num);
+                System.out.print(++num);
+            }
+            //通知
+            cdAZ.signal();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public  void printAZ(int i) throws InterruptedException {
+        lock.lock();
+        try {
+            //判断
+            while (flag != 1){
+                cdAZ.await();
+            }
+            //干活
+            flag--;
+            System.out.print((char) (65 + i));
+            //通知
+            cdInt.signal();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+}
+
 /**
  * 现在两个线程
  * 操作一个初始值为0的变量
@@ -75,7 +126,27 @@ class ShareDataOne {
 public class NotifyWaitDemo {
 
     public static void main(String[] args) {
-        ShareDataOne shareDataOne = new ShareDataOne();
+        Demo demo = new Demo();
+        new Thread(() -> {
+            for (int i = 1; i < 52; i++) {
+                try {
+                    demo.printInt(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "printInt").start();
+
+        new Thread(() -> {
+            for (int i = 0; i < 26; i++) {
+                try {
+                    demo.printAZ(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, "printAZ").start();
+        /*ShareDataOne shareDataOne = new ShareDataOne();
         new Thread(() -> {
             for (int i = 1; i <= 10; i++) {
                 try {
@@ -111,6 +182,6 @@ public class NotifyWaitDemo {
                     e.printStackTrace();
                 }
             }
-        }, "DD").start();
+        }, "DD").start();*/
     }
 }
