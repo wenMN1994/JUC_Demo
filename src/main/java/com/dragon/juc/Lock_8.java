@@ -16,7 +16,7 @@ class Phone {
 //        TimeUnit.SECONDS.sleep(4);
         System.out.println("------sendSMS");
     }
-    public synchronized void sendEmail() throws Exception {
+    public static synchronized void sendEmail() throws Exception {
         System.out.println("------sendEmail");
     }
 
