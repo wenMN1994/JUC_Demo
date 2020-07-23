@@ -2,6 +2,7 @@ package com.dragon.juc;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author：Dragon Wen
@@ -14,6 +15,50 @@ import java.util.concurrent.ExecutionException;
 public class CompletableFutureDemo {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
+//        Demo01();
+//        runAsync();
+//        supplyAsync();
+
+    }
+
+    /**
+     * 无返回值
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public static void runAsync() throws ExecutionException, InterruptedException {
+        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("run end ...");
+        });
+
+        future.get();
+    }
+
+    /**
+     * 有返回值
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public static void supplyAsync() throws ExecutionException, InterruptedException {
+        CompletableFuture<Long> longCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("run end ...");
+            return System.currentTimeMillis();
+        });
+        Long time = longCompletableFuture.get();
+        System.out.println("time = " + time);
+    }
+
+    private static void Demo01() throws InterruptedException, ExecutionException {
         //同步，异步，异步回调
         //MQ消息中间件
         //同步
@@ -31,12 +76,12 @@ public class CompletableFutureDemo {
 
         future2.whenComplete(
                 (t,u)->{
-                    System.out.println("*****t="+t);
-                    System.out.println("*****u="+u);
+                    System.out.println("whenComplete*****t="+t);
+                    System.out.println("whenComplete*****u="+u);
                 }
         ).exceptionally(
                 f->{
-                    System.out.println(f.getMessage());
+                    System.out.println("exceptionally*****"+f.getMessage());
                     return 444;
                 }
         );
